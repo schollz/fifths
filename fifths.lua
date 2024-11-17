@@ -44,15 +44,20 @@ input[1].scale=function(x)
   last_value=x
 
   --update output tuning to new key (behaves like sample and hold of input 2 value)
-  for i=1,3 do
+  for i=1,4 do
     output[i].scale(new_key)
   end
-  output[4].scale({new_key[1]})
-
-  output[1].volts=x.volts+2
+  --output[4].scale({new_key[1]})
+  local volts4=x.volts
+for i=1,10 do
+	if volts4>2 then 
+		volts4 = volts4-1
+	end
+end
+  output[1].volts=x.volts+1
   output[2].volts=x.volts+ambiguous_third+1
   output[3].volts=x.volts+ambiguous_third+ambiguous_third+0
-  output[4].volts=x.volts-1
+  output[4].volts=volts4
 end
 
 -- when input 2 hops between windows, choose a new key from the circle of fifths
@@ -75,9 +80,9 @@ function init()
   for i=1,4 do
     output[i].scale(new_key)
   end
-  output[1].slew=4.7
-  output[2].slew=3.9
-  output[3].slew=5.8
+  output[1].slew=0.3
+  output[2].slew=0.1
+  output[3].slew=0.7
   output[4].slew=0.1
 
   --start in C major (ie. 0V at input 2)
